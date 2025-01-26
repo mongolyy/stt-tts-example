@@ -7,15 +7,15 @@ import subprocess
 import tempfile
 import os
 
-st.title("リアルタイム音声文字起こしアプリ")
+st.title("文字起こしアプリ")
 
 # 入力方法の選択
 input_method = st.radio(
     "入力方法を選択してください",
-    ["マイクでリアルタイム文字起こし", "音声ファイルをアップロード"]
+    ["マイクで文字起こし", "音声ファイルをアップロード"]
 )
 
-if input_method == "マイクでリアルタイム文字起こし":
+if input_method == "マイクで文字起こし":
     st.write("🎤 以下のボタンをクリックして録音を開始/停止できます")
     
     # マイクレコーダーの表示
