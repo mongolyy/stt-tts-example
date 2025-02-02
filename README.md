@@ -33,7 +33,7 @@ uv sync
 3. ffmpegのインストール:
 - Windows: wingetを使用してインストール
 ```sh
-winget install Gyan.FFmpeg
+winget install ffmpeg
 ```
 - macOS: Homebrewを使用してインストール
 ```sh
@@ -60,6 +60,7 @@ LANGSMITH_PROJECT="your-project-name"  # オプション
 
 1. アプリケーションの起動:
 ```sh
+export UV_ENV_FILE=.env
 streamlit run app.py
 ```
 
