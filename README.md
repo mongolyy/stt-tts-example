@@ -50,6 +50,10 @@ cp .env.example .env
 2. `.env`ファイルを編集し、必要な環境変数を設定:
 ```
 OPENAI_API_KEY="your-api-key-here"
+AZURE_OPENAI_ENDPOINT="https://your-resource-name.openai.azure.com/"
+AZURE_OPENAI_API_KEY="your-azure-openai-api-key-here"
+AZURE_OPENAI_API_VERSION="2025-01-01-preview"
+AZURE_OPENAI_DEPLOYMENT_NAME="your-deployment-name"
 LANGSMITH_TRACING="true"  # オプション
 LANGSMITH_ENDPOINT="https://api.smith.langchain.com"  # オプション
 LANGSMITH_API_KEY="your-langsmith-api-key"  # オプション
@@ -61,7 +65,7 @@ LANGSMITH_PROJECT="your-project-name"  # オプション
 1. アプリケーションの起動:
 ```sh
 export UV_ENV_FILE=.env
-streamlit run app.py
+uv run streamlit run app.py
 ```
 
 2. ブラウザで`http://localhost:8501`を開く

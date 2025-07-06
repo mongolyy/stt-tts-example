@@ -14,3 +14,6 @@ wheels/
 
 # Sample audio file
 sample.mp3
+
+# IDE
+.idea/
