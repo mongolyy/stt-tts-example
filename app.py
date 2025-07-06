@@ -1,6 +1,6 @@
 import streamlit as st
 from streamlit_mic_recorder import mic_recorder
-from langchain_openai import ChatOpenAI
+from langchain_openai import ChatOpenAI, AzureChatOpenAI
 import base64
 import io
 import subprocess
@@ -9,11 +9,32 @@ import os
 
 st.title("文字起こしアプリ")
 
+# LLMプロバイダーの選択
+provider = st.selectbox(
+    "LLMプロバイダーを選択してください",
+    ["OpenAI", "Azure OpenAI"]
+)
+
 # 入力方法の選択
 input_method = st.radio(
     "入力方法を選択してください",
     ["マイクで文字起こし", "音声ファイルをアップロード"]
 )
+
+def create_llm():
+    if provider == "Azure OpenAI":
+        return AzureChatOpenAI(
+            azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+            api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+            api_version=os.getenv("AZURE_OPENAI_API_VERSION", "2025-01-01-preview"),
+            azure_deployment=os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME"),
+            temperature=0,
+        )
+    else:
+        return ChatOpenAI(
+            model="gpt-4o-audio-preview",
+            temperature=0,
+        )
 
 if input_method == "マイクで文字起こし":
     st.write("🎤 以下のボタンをクリックして録音を開始/停止できます")
@@ -53,10 +74,7 @@ if input_method == "マイクで文字起こし":
                     audio_bytes = wav_file.read()
                     audio_base64 = base64.b64encode(audio_bytes).decode()
 
-                llm = ChatOpenAI(
-                    model="gpt-4o-audio-preview",
-                    temperature=0,
-                )
+                llm = create_llm()
                 
                 output_message = llm.invoke(
                     [
@@ -97,10 +115,7 @@ else:
         
         if st.button("アップロードした音声を文字起こし"):
             with st.spinner("文字を起こしています..."):
-                llm = ChatOpenAI(
-                    model="gpt-4o-audio-preview",
-                    temperature=0,
-                )
+                llm = create_llm()
                 
                 audio = audio_file.read()
                 audio_base64 = base64.b64encode(audio).decode()
